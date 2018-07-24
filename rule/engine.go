@@ -23,18 +23,18 @@ func Isvalid(w http.ResponseWriter, r *http.Request) {
 	var response = ResponseData{}
 	if err != nil {
 		log.Println(err)
-		response.Message = "Error with the body in the request."
-		response.Status = 422
+		response = prepareResponse(422,"Error with the body in the request.")
 	}
 
 	if payload.IsProductValid == true {
-		response.Message = "All good."
-		response.Status = 200
+		response = prepareResponse(200, "All good.")
 	} else {
-		response.Message = "Product validity failed."
-		response.Status = 422
+		response = prepareResponse(422,"Product validity failed.")
 	}
-
 	json.NewEncoder(w).Encode(response)
 	log.Println("In rule engine check.")
+}
+
+func prepareResponse(status int, message string) ResponseData {
+	return ResponseData{Status: status, Message: message}
 }
