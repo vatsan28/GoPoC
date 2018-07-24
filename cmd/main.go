@@ -11,7 +11,6 @@ const (
 )
 
 func main() {
-
 	http.HandleFunc("/", rule.Isvalid)
 	http.ListenAndServe(":"+port, nil)
 }

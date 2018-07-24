@@ -18,13 +18,23 @@ type ResponseData struct {
 }
 
 func Isvalid(w http.ResponseWriter, r *http.Request) {
-	var order Order
-	err := json.NewDecoder(r.Body).Decode(&order)
+	var payload Order
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	var response = ResponseData{}
 	if err != nil {
 		log.Println(err)
+		response.Message = "Error with the body in the request."
+		response.Status = 422
 	}
-	log.Println(order.IsProductValid)
-	var response = ResponseData{Status: 200, Message: "Ok"}
+
+	if payload.IsProductValid == true {
+		response.Message = "All good."
+		response.Status = 200
+	} else {
+		response.Message = "Product validity failed."
+		response.Status = 422
+	}
+
 	json.NewEncoder(w).Encode(response)
 	log.Println("In rule engine check.")
 }
