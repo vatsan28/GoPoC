@@ -1,4 +1,4 @@
-package rule_test
+package rule_engine
 
 import (
 	"testing"
