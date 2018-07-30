@@ -9,8 +9,7 @@ import (
 func RunEngine(env models.RulesEnv) models.RulesEnv {
 	log.Println("In rule engine.", env)
 	env.Cart.Result = make(map[string]bool)
-	env.RuleStack.Push(rule.IsProductAvailable)
-	env.RuleStack.Push(rule.IsValidProduct)
+	env.RuleStack.Push(rule.IsProductDummy)
 
 	for env.RuleStack.IsEmpty() == false {
 		rule, err := env.RuleStack.Pop()

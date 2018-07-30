@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"GoPoc/models"
 	"GoPoc/rule_engine"
+	"time"
 )
 
 const (
@@ -14,7 +15,7 @@ const (
 
 
 func main() {
-	http.HandleFunc("/", validate)
+	http.HandleFunc("/", timed(validate))
 	http.ListenAndServe(":"+port, nil)
 }
 
@@ -39,4 +40,13 @@ func validate(w http.ResponseWriter, r *http.Request) {
 
 func prepareResponse(status int, message string, resultEnv models.Cart) models.ResponseData {
 	return models.ResponseData{Status: status, Message: message, Cart: resultEnv}
+}
+
+func timed(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		next(w, r)
+		end := time.Now()
+		log.Println("The request took", end.Sub(start))
+	}
 }

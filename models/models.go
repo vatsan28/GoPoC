@@ -1,10 +1,16 @@
 package models
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 type Cart struct {
-	IsProductValid bool `json:"isProductValid"`
-	IsProductAvailable bool `json:"isProductAvailable"`
+	IsProductDummy bool `json:"isProductDummy"`
+	UserIsEligibleForEmployeeOptions bool `json:"userIsEligibleForEmployeeOptions"`
+	IsProductSigninForPrice bool `json:"isProductSigninForPrice"`
+	IsProductCustomerSpecific bool `json:"isProductCustomerSpecific"`
+	IsAccountWithCustomerSpecificProduct bool `json:"isAccountWithCustomerSpecificProduct"`
 	Result map[string]bool
 }
 
@@ -22,6 +28,7 @@ type ResponseData struct {
 }
 
 func (s *RuleStack) Push(newRule func(RulesEnv) RulesEnv) {
+	log.Println("Adding new rule to the stack.", newRule)
 	*s = append(*s, newRule)
 }
 
